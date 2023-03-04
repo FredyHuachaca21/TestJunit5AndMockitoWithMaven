@@ -6,6 +6,9 @@ import com.fredgar.pe.repository.PreguntaRepository;
 import data.Datos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 
@@ -16,16 +19,16 @@ import static org.mockito.Mockito.*;
 
 class ExamenServiceImplTest {
 
+  @Mock
   ExamenRepository examenRepository;
+  @Mock
   PreguntaRepository preguntaRepository;
-  ExamenService service;
+  @InjectMocks
+  ExamenServiceImpl service;
 
   @BeforeEach
   void setUp() {
-    examenRepository = mock(ExamenRepository.class);
-    preguntaRepository = mock(PreguntaRepository.class);
-    service = new ExamenServiceImpl(examenRepository, preguntaRepository);
-
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test
