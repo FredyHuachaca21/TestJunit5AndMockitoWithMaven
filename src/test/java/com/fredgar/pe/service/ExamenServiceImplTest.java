@@ -12,8 +12,7 @@ import java.util.*;
 import static data.Datos.EXAMEN_LIST;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ExamenServiceImplTest {
 
@@ -62,4 +61,21 @@ class ExamenServiceImplTest {
     assertEquals(true, examen.get().getPreguntas().get(2).equalsIgnoreCase("poo"));
     assertEquals(true, examen.get().getPreguntas().get(2).contains("POO"));
   }
+
+  @Test
+  void buscarExamenPorNombreConPreguntasVerifyTest() {
+    when(examenRepository.findAll()).thenReturn(EXAMEN_LIST);
+    when(preguntaRepository.buscarPreguntasPorExamenId(anyLong())).thenReturn(Datos.PREGUNTAS_LIST);
+    Optional<Examen> examen = service.buscarExamenPorNombreConPreguntas("Java");
+    assertEquals(4, examen.get().getPreguntas().size());
+    assertTrue(examen.get().getPreguntas().contains("POO"));
+    assertFalse(examen.get().getPreguntas().contains("Cualquier cosa"));
+    assertEquals("POO", examen.get().getPreguntas().get(2));
+    assertEquals(true, examen.get().getPreguntas().get(2).equals("POO"));
+    assertEquals(true, examen.get().getPreguntas().get(2).equalsIgnoreCase("poo"));
+    assertEquals(true, examen.get().getPreguntas().get(2).contains("POO"));
+    verify(examenRepository).findAll();
+    verify(preguntaRepository).buscarPreguntasPorExamenId(anyLong());
+  }
+
 }
