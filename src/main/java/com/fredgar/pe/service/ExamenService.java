@@ -2,6 +2,8 @@ package com.fredgar.pe.service;
 
 import com.fredgar.pe.model.Examen;
 
+import java.util.Optional;
+
 public interface ExamenService {
-  Examen buscarExamenPorNombre(String nombre);
+  Optional<Examen> buscarExamenPorNombre(String nombre);
 }

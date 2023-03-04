@@ -13,15 +13,9 @@ public class ExamenServiceImpl implements ExamenService{
   private ExamenRepository repository;
 
   @Override
-  public Examen buscarExamenPorNombre(String nombre) {
-    Optional<Examen> examenOptional = repository.findAll().stream().filter(name -> name.getNombre()
+  public Optional<Examen> buscarExamenPorNombre(String nombre) {
+    return repository.findAll().stream().filter(name -> name.getNombre()
         .equalsIgnoreCase(nombre))
         .findFirst();
-
-    Examen examen = null;
-    if (examenOptional.isPresent()) {
-      examen = examenOptional.orElseThrow();
-    }
-    return examen;
   }
 }
