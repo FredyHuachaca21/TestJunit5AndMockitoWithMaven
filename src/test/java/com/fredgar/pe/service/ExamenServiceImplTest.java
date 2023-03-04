@@ -2,10 +2,8 @@ package com.fredgar.pe.service;
 
 import com.fredgar.pe.model.Examen;
 import com.fredgar.pe.repository.ExamenRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
@@ -15,9 +13,18 @@ import static org.mockito.Mockito.when;
 
 class ExamenServiceImplTest {
 
+  ExamenRepository repository;
+  ExamenService service;
+
+  @BeforeEach
+  void setUp() {
+   repository = mock(ExamenRepository.class);
+   service = new ExamenServiceImpl(repository);
+
+  }
+
   @Test
   void buscarExamenPorNombre() {
-    ExamenRepository repository = mock(ExamenRepository.class);
     List<Examen> data = Arrays.asList(
         new Examen(1L, "Fisica"),
         new Examen(2L, "Quimica"),
@@ -25,7 +32,6 @@ class ExamenServiceImplTest {
         new Examen(4L, "Python")
     );
     when(repository.findAll()).thenReturn(data);
-    ExamenService service = new ExamenServiceImpl(repository);
     Optional<Examen> examen = service.buscarExamenPorNombre("Java");
     assertTrue(examen.isPresent());
     assertEquals("Java", examen.get().getNombre());
@@ -34,11 +40,11 @@ class ExamenServiceImplTest {
 
   @Test
   void buscarExamenPorNombreListaVacia() {
-    ExamenRepository repository = mock(ExamenRepository.class);
+
     List<Examen> data = Collections.emptyList();
     when(repository.findAll()).thenReturn(data);
-    ExamenService service = new ExamenServiceImpl(repository);
     Optional<Examen> examen = service.buscarExamenPorNombre("Java");
     assertTrue(examen.isEmpty());
+    assertFalse(examen.isPresent());
   }
 }
