@@ -16,4 +16,6 @@ public class Datos {
   public final static List<String> PREGUNTAS_LIST = Arrays.asList(
     "Integrales", "Elementos Quimicos", "POO", "Funciones"
   );
+
+  public final static Examen EXAMEN = new Examen(5L, "JavaScript");
 }

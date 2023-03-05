@@ -80,4 +80,18 @@ class ExamenServiceImplTest {
     verify(preguntaRepository).buscarPreguntasPorExamenId(anyLong());
   }
 
+  @Test
+  void guadarExamenTest() {
+    Examen nuevoExamen = Datos.EXAMEN;
+    nuevoExamen.setPreguntas(Datos.PREGUNTAS_LIST);
+    when(examenRepository.guardar(any(Examen.class))).thenReturn(Datos.EXAMEN);
+    Examen examen = service.guardar(nuevoExamen);
+
+    assertNotNull(examen.getId());
+    assertEquals(5L, examen.getId());
+    assertEquals("JavaScript", examen.getNombre());
+
+    verify(examenRepository).guardar(any(Examen.class));
+    verify(preguntaRepository).guardarVariasPreguntas(anyList());
+  }
 }
