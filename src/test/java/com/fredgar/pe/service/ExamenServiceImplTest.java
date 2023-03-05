@@ -10,7 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.util.*;
 
@@ -91,6 +93,32 @@ class ExamenServiceImplTest {
     assertEquals(5L, examen.getId());
     assertEquals("JavaScript", examen.getNombre());
 
+    verify(examenRepository).guardar(any(Examen.class));
+    verify(preguntaRepository).guardarVariasPreguntas(anyList());
+  }
+
+  @Test
+  void guadarExamenConIdIncrementalTest() {
+    Examen nuevoExamen = Datos.EXAMEN_SIN_ID;
+    nuevoExamen.setPreguntas(Datos.PREGUNTAS_LIST);
+    when(examenRepository.guardar(any(Examen.class))).then(new Answer<Examen>() {
+
+      Long secuencia = 5L;
+      @Override
+      public Examen answer(InvocationOnMock invocationOnMock) throws Throwable {
+        Examen examen = invocationOnMock.getArgument(0);
+        examen.setId(++secuencia);
+        return examen;
+      }
+    });
+    Examen examen = service.guardar(nuevoExamen);
+
+    assertNotNull(examen.getId());
+    assertEquals(6L, examen.getId());
+    assertEquals("JavaScript", examen.getNombre());
+    System.out.println(nuevoExamen.getId());
+    System.out.println(nuevoExamen.getNombre());
+    System.out.println(nuevoExamen.getPreguntas());
     verify(examenRepository).guardar(any(Examen.class));
     verify(preguntaRepository).guardarVariasPreguntas(anyList());
   }

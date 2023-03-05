@@ -18,4 +18,5 @@ public class Datos {
   );
 
   public final static Examen EXAMEN = new Examen(5L, "JavaScript");
+  public final static Examen EXAMEN_SIN_ID = new Examen(5L, "JavaScript");
 }
